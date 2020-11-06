@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".ProfileSettingsActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_profile_image"
@@ -14,32 +14,55 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:civ_border_width="2dp"
-        app:civ_border_color="#000000"
+        android:src="@drawable/user_temp_profile"
+        app:civ_border_color="#304FFE"
         android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/profile_user_phone"
+        android:layout_width="270dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/change_image_btn"
+        android:layout_marginTop="60dp"
+        android:text="Phone Number"
+        android:background="@drawable/stroke_btn"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textColor="#FF5050"
+        android:textSize="19sp"/>
 
     <EditText
         android:id="@+id/user_name"
         android:layout_width="270dp"
         android:layout_height="55dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/change_image_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_user_phone"
+        android:background="@drawable/stroke_btn"
+        android:paddingLeft="20dp"
+        android:textSize="19sp"/>
 
     <TextView
         android:id="@+id/change_image_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="260dp"
         android:layout_height="wrap_content"
         android:text="Change Profile Image"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_profile_image"
         android:layout_marginTop="10dp"
-        android:textSize="17sp"/>
+        android:textSize="17sp"
+        android:background="@drawable/solid_btn"
+        android:textAlignment="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
 
     <Button
         android:id="@+id/reset_changes"
@@ -49,6 +72,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_name"
-        android:layout_marginTop="70dp"/>
+        android:layout_marginTop="70dp"
+        android:background="@drawable/solid_btn"
+        android:textColor="#FFFFFF"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textAllCaps="false"
+        android:textStyle="bold"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

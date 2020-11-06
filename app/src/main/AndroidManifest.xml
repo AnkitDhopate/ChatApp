@@ -14,10 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".ChatWindowActivity"
+        <activity android:name=".ContactUsActivity"
             android:theme="@style/ChatTheme"/>
-        <activity android:name=".StartActivity"
+        <activity
+            android:name=".SettingsActivity"
+            android:theme="@style/ChatTheme" />
+        <activity android:name=".ProfileSettingsActivity" />
+        <activity
+            android:name=".ChatWindowActivity"
+            android:theme="@style/ChatTheme" />
+        <activity
+            android:name=".StartActivity"
             android:theme="@style/ChatTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,10 +36,7 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".PhoneVerificationActivity" />
         <activity android:name=".MainActivity" />
-
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
-<!--            android:theme="@style/Base.CardView" />-->
-
     </application>
 
 </manifest>

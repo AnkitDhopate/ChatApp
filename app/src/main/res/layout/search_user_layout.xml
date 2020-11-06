@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:elevation="5dp"
+    app:cardCornerRadius="5dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#F8E5FF">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/search_contact_profile_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"
+            app:civ_border_width="1dp"
+            app:civ_border_color="#000000"
+            android:src="@drawable/user_temp_profile"
+            />
+
+        <TextView
+            android:id="@+id/found_user_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading Data ......."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#000000"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginLeft="20dp"
+            />
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

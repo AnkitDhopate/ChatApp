@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="5dp"
+        app:cardCornerRadius="6dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFDCDC"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/chat_msg_receiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="The sender phone will appear here"
+                    android:textColor="#0019FF"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:paddingTop="3dp"
+                    android:paddingLeft="3dp"/>
+
+                <TextView
+                    android:id="@+id/re_chat_msg_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:textSize="8sp"
+                    android:textColor="#000000"
+                    android:paddingLeft="3dp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/received_chat_msg_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="The chat will appear here"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:paddingTop="3dp"
+                android:paddingLeft="3dp"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--<TextView-->
+<!--android:id="@+id/chat_msg_receiver"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:text="The receiver name will appear here"-->
+<!--app:layout_constraintEnd_toEndOf="parent"-->
+<!--app:layout_constraintStart_toStartOf="parent"-->
+<!--app:layout_constraintTop_toTopOf="parent"-->
+<!--app:layout_constraintHorizontal_bias="0.05"-->
+<!--android:layout_marginTop="10dp"-->
+<!--android:textColor="#D50000"-->
+<!--android:textStyle="bold"-->
+<!--android:textSize="12sp"-->
+<!--android:background="#FFEEB1"/>-->
+
+<!--<TextView-->
+<!--android:id="@+id/received_chat_msg_content"-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--app:layout_constraintHorizontal_bias="0.05"-->
+<!--android:text="The chat will appear here"-->
+<!--android:textColor="#000000"-->
+<!--android:textSize="18sp"-->
+<!--app:layout_constraintEnd_toEndOf="parent"-->
+<!--app:layout_constraintStart_toStartOf="parent"-->
+<!--app:layout_constraintTop_toBottomOf="@+id/chat_msg_receiver"-->
+<!--android:background="#B5EEFF"/>-->

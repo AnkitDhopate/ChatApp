@@ -1,0 +1,17 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#0022FF</item>
+        <item name="colorPrimaryDark">#0037FF</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="ChatTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#0022FF</item>
+        <item name="colorPrimaryDark">#0037FF</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+</resources>

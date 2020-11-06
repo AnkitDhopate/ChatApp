@@ -32,7 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchUserActivity" />
+        <activity android:name=".SearchUserActivity"
+            android:theme="@style/ChatTheme"/>
         <activity android:name=".HomeActivity" />
         <activity android:name=".PhoneVerificationActivity" />
         <activity android:name=".MainActivity" />

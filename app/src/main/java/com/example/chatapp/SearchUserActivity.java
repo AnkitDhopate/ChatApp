@@ -12,16 +12,12 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.Adapter.SearchUserAdapter;
-import com.example.chatapp.Model.SearchUserModel;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,11 +34,8 @@ public class SearchUserActivity extends AppCompatActivity {
     private SearchUserAdapter adapter;
 
 
-    ////Working Code
-    private List<String> searchUserModelList;
-    ////Working Code
-
     //Phone Contacts Filter
+    private List<String> searchUserModelList;
     public static final int REQUEST_READ_CONTACTS = 79;
     private ArrayList mobileArrayPhone;
     //Phone Contacts Filter
@@ -59,16 +52,6 @@ public class SearchUserActivity extends AppCompatActivity {
         userRecyclerView = findViewById(R.id.search_user_recycler_view);
         userRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-//        firebaseDatabase = FirebaseDatabase.getInstance().getReference("Users") ;
-
-        /*
-        FirebaseRecyclerOptions<SearchUserModel> options = new FirebaseRecyclerOptions.Builder<SearchUserModel>()
-                .setQuery(firebaseDatabase, SearchUserModel.class)
-                .build() ;
-        adapter = new SearchUserAdapter(options) ;
-        userRecyclerView.setAdapter(adapter) ;
-         */
-
         searchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,23 +60,21 @@ public class SearchUserActivity extends AppCompatActivity {
                     searchUserPhoneNumber.setError("Please enter a number");
                 }else
                 {
+                    searchUserModelList.clear() ;
                     String ph = searchUserPhoneNumber.getText().toString() ;
-                    firebaseUserSearch(ph) ;
+                    if(ph.charAt(0)!='+')
+                    {
+                        ph = "+91"+ph ;
+                        firebaseUserSearch(ph) ;
+                    }else
+                    {
+                        firebaseUserSearch(ph) ;
+                    }
+//                    firebaseUserSearch(ph) ;
                 }
             }
         });
 
-//        //The Phone Contacts Filter
-//
-//
-//        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mobileArrayPhone = getAllContacts() ;
-//        } else {
-//            requestPermission();
-//        }
-//
-//        //The Phone Contacts Filter
 
     }
 
@@ -103,12 +84,18 @@ public class SearchUserActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
+                boolean check = false ;
                 for (DataSnapshot ds : snapshot.getChildren())
                 {
                     if(mobileArrayPhone.contains(ds.child("Phone").getValue().toString()))
                     {
+                        check = true ;
                         searchUserModelList.add(ds.child("Phone").getValue().toString());
                     }
+                }
+                if(check==false)
+                {
+                    Toast.makeText(SearchUserActivity.this, "Entered number not found !", Toast.LENGTH_SHORT).show();
                 }
                 adapter = new SearchUserAdapter(searchUserModelList);
                 userRecyclerView.setAdapter(adapter);
@@ -119,12 +106,6 @@ public class SearchUserActivity extends AppCompatActivity {
 
             }
         }) ;
-//        FirebaseRecyclerOptions<SearchUserModel> options = new FirebaseRecyclerOptions.Builder<SearchUserModel>()
-//                .setQuery(firebaseDatabase.orderByChild("Phone").startAt(ph).endAt(ph + "\uf8ff"), SearchUserModel.class)
-//                .build() ;
-//        adapter = new SearchUserAdapter(options) ;
-//        adapter.startListening() ;
-//        userRecyclerView.setAdapter(adapter) ;
     }
 
     @Override
@@ -148,8 +129,6 @@ public class SearchUserActivity extends AppCompatActivity {
                             searchUserModelList.add(ds.child("Phone").getValue().toString());
                             adapter.notifyDataSetChanged();
                         }
-//                        searchUserModelList.add(ds.child("Phone").getValue().toString());
-//                        adapter.notifyDataSetChanged();
                     }
                 }
 
@@ -164,30 +143,6 @@ public class SearchUserActivity extends AppCompatActivity {
         } else {
             requestPermission();
         }
-
-//        ////This is new working code
-//        firebaseDatabase = FirebaseDatabase.getInstance().getReference("Users") ;
-//        searchUserModelList = new ArrayList<>() ;
-//
-//        firebaseDatabase.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot)
-//            {
-//                for(DataSnapshot ds : snapshot.getChildren())
-//                {
-//                    searchUserModelList.add(ds.child("Phone").getValue().toString());
-//                    adapter.notifyDataSetChanged() ;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        }) ;
-//        adapter = new SearchUserAdapter(searchUserModelList) ;
-//        userRecyclerView.setAdapter(adapter) ;
-//        ////This is new working code
     }
 
     //The Phone Contacts Filter
@@ -267,7 +222,6 @@ public class SearchUserActivity extends AppCompatActivity {
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
-//                        phoneList.add(phoneNo);
                         if(phoneNo.length()==13)
                         {
                             phoneList.add(phoneNo);

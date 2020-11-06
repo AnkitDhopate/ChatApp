@@ -24,7 +24,7 @@ public class StartActivity extends AppCompatActivity
         setContentView(R.layout.activity_start);
         lottieAnimationView = findViewById(R.id.lottie) ;
 
-        lottieAnimationView.animate().translationY(3000).setDuration(1000).setStartDelay(3000) ;
+        lottieAnimationView.animate().translationY(3000).setDuration(500).setStartDelay(3000) ;
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -32,6 +32,6 @@ public class StartActivity extends AppCompatActivity
                 startActivity(new Intent(StartActivity.this, MainActivity.class));
                 finish() ;
             }
-        }, 3000) ;
+        }, 3400) ;
     }
 }

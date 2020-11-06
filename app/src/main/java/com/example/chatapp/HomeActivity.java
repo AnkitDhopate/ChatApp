@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView allChatsRecyclerView ;
     private List<String> allChatList ;
     private String userName, userPh;
+    private ProgressDialog loadingBar ;
 
     private DatabaseReference firebaseDatabase ;
     private FirebaseAuth firebaseAuth ;
@@ -52,6 +54,8 @@ public class HomeActivity extends AppCompatActivity
         appName = findViewById(R.id.textView5) ;
         appText = findViewById(R.id.textView6) ;
         allChatsRecyclerView = findViewById(R.id.chats_recycler_view) ;
+
+        loadingBar = new ProgressDialog(this) ;
 
         allChatsRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
         allChatList = new ArrayList<>() ;
@@ -117,7 +121,8 @@ public class HomeActivity extends AppCompatActivity
 
         newChatBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(HomeActivity.this, SearchUserActivity.class) ;
                 startActivity(intent) ;
             }

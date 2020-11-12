@@ -91,28 +91,18 @@ public class SearchUserActivity extends AppCompatActivity {
                     {
                         check = true ;
                         searchUserModelList.add(ds.child("Phone").getValue().toString());
+                    }else
+                    {
+                        if(ds.child("Phone").getValue().toString().equals(ph))
+                        {
+                            check = true ;
+                            searchUserModelList.add(ds.child("Phone").getValue().toString());
+                        }
                     }
                 }
                 if(check==false)
                 {
-                    /*Toast.makeText(SearchUserActivity.this, "Entered number not found !", Toast.LENGTH_SHORT).show();*/
-                    firebaseDatabase.child("Users").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.hasChild(ph))
-                            {
-                                searchUserModelList.add(snapshot.child(ph).child("Name").getValue().toString()) ;
-                            }else
-                            {
-                                Toast.makeText(SearchUserActivity.this, "This user is not found !!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    }) ;
+                    Toast.makeText(SearchUserActivity.this, "Entered number not found !", Toast.LENGTH_SHORT).show();
                 }
                 adapter = new SearchUserAdapter(searchUserModelList);
                 userRecyclerView.setAdapter(adapter);

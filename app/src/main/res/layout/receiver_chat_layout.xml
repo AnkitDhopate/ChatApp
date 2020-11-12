@@ -36,7 +36,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#B8D5FF"
+                android:background="#56A7FF"
                 android:orientation="vertical">
 
                 <TextView
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="The sender phone will appear here"
-                    android:textColor="#0019FF"
+                    android:textColor="#FF0000"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:paddingTop="3dp"

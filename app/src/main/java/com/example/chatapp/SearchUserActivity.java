@@ -78,7 +78,7 @@ public class SearchUserActivity extends AppCompatActivity {
 
     }
 
-    private void firebaseUserSearch(String ph)
+    private void firebaseUserSearch(final String ph)
     {
         firebaseDatabase.orderByChild("Phone").startAt(ph).endAt(ph + "\uf8ff").addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,7 +95,24 @@ public class SearchUserActivity extends AppCompatActivity {
                 }
                 if(check==false)
                 {
-                    Toast.makeText(SearchUserActivity.this, "Entered number not found !", Toast.LENGTH_SHORT).show();
+                    /*Toast.makeText(SearchUserActivity.this, "Entered number not found !", Toast.LENGTH_SHORT).show();*/
+                    firebaseDatabase.child("Users").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.hasChild(ph))
+                            {
+                                searchUserModelList.add(snapshot.child(ph).child("Name").getValue().toString()) ;
+                            }else
+                            {
+                                Toast.makeText(SearchUserActivity.this, "This user is not found !!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    }) ;
                 }
                 adapter = new SearchUserAdapter(searchUserModelList);
                 userRecyclerView.setAdapter(adapter);

@@ -41,152 +41,149 @@ import java.util.concurrent.Delayed;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ChatWindowActivity extends AppCompatActivity
-{
-    private TextView friendName ;
+public class ChatWindowActivity extends AppCompatActivity {
+    private TextView friendName;
     private EditText chatContent;
-    private ImageView sendMsg ;
-    private RecyclerView chatRecyclerView ;
-    private ChatRetrieveAdapter adapter ;
-    private String senderNo, receiverNo ;
-    private List<ChatModel> chatModelList ;
-    private String senderName, receiverName ;
-    private CircleImageView userProfileImage ;
-    private String type ;
+    private ImageView sendMsg;
+    private RecyclerView chatRecyclerView;
+    private ChatRetrieveAdapter adapter;
+    private String senderNo, receiverNo;
+    private List<ChatModel> chatModelList;
+    private String senderName, receiverName;
+    private CircleImageView userProfileImage;
+    private String type;
 
-    private DatabaseReference firebaseDatabase ;
-    private FirebaseAuth firebaseAuth ;
+    private DatabaseReference firebaseDatabase;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
 
-        friendName = findViewById(R.id.chat_box_user_phone) ;
-        chatContent = findViewById(R.id.chat_messages_input) ;
-        sendMsg = findViewById(R.id.send_image_btn) ;
-        chatRecyclerView = findViewById(R.id.chat_recycler_view) ;
-        userProfileImage = findViewById(R.id.chat_window_profile_image) ;
+        friendName = findViewById(R.id.chat_box_user_phone);
+        chatContent = findViewById(R.id.chat_messages_input);
+        sendMsg = findViewById(R.id.send_image_btn);
+        chatRecyclerView = findViewById(R.id.chat_recycler_view);
+        userProfileImage = findViewById(R.id.chat_window_profile_image);
 
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference() ;
-        firebaseAuth = FirebaseAuth.getInstance() ;
-        senderNo = firebaseAuth.getCurrentUser().getPhoneNumber() ;
-        chatModelList = new ArrayList<>() ;
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        firebaseAuth = FirebaseAuth.getInstance();
+        senderNo = firebaseAuth.getCurrentUser().getPhoneNumber();
+        chatModelList = new ArrayList<>();
 
-        type = getIntent().getStringExtra("Type") ;
-        if(type.equals("Home"))
-        {
-            receiverName = getIntent().getStringExtra("Name") ;
-            friendName.setText(receiverName) ;
+        type = getIntent().getStringExtra("Type");
+        if (type.equals("Home")) {
+            receiverName = getIntent().getStringExtra("Name");
+            friendName.setText(receiverName);
 
             firebaseDatabase.child("Users").child(senderNo).child("Name").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    senderName = snapshot.getValue().toString() ;
+                    senderName = snapshot.getValue().toString();
 
                     firebaseDatabase.child("Users").addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot)
-                        {
-                            for(DataSnapshot ds : snapshot.getChildren())
-                            {
-                                String tempName = ds.child("Name").getValue().toString() ;
-                                if(tempName.equals(receiverName))
-                                {
-                                    receiverNo = ds.child("Phone").getValue().toString() ;
-                                    break ;
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                String tempName = ds.child("Name").getValue().toString();
+                                if (tempName.equals(receiverName)) {
+                                    receiverNo = ds.child("Phone").getValue().toString();
+                                    break;
                                 }
                             }
-                            fillTheChat(senderName, receiverName) ;
+                            fillTheChat(senderName, receiverName);
 
                             firebaseDatabase.child("Users").child(receiverNo).child("ProfileImage").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.exists())
-                                    {
-                                        Picasso.get().load(snapshot.getValue().toString()).into(userProfileImage) ;
+                                    if (snapshot.exists()) {
+                                        Picasso.get().load(snapshot.getValue().toString()).into(userProfileImage);
                                     }
-                                }@Override
+                                }
+
+                                @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
                                     Toast.makeText(ChatWindowActivity.this, "Error while setting the profile pic !", Toast.LENGTH_SHORT).show();
                                 }
-                            }) ;
-                        }@Override
+                            });
+                        }
+
+                        @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                             Toast.makeText(ChatWindowActivity.this, "Error while retrieving receiver number", Toast.LENGTH_SHORT).show();
                         }
-                    }) ;
-                }@Override
+                    });
+                }
+
+                @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(ChatWindowActivity.this, "Error while retrieving sender name", Toast.LENGTH_SHORT).show();
                 }
-            }) ;
-        }else if(type.equals("Search"))
-        {
-            receiverNo = getIntent().getStringExtra("Phone") ;
+            });
+        } else if (type.equals("Search")) {
+            receiverNo = getIntent().getStringExtra("Phone");
 
             firebaseDatabase.child("Users").child(senderNo).child("Name").addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot)
-                {
-                    senderName = snapshot.getValue().toString() ;
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    senderName = snapshot.getValue().toString();
 
                     firebaseDatabase.child("Users").child(receiverNo).child("Name").addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot)
-                        {
-                            receiverName = snapshot.getValue().toString() ;
-                            friendName.setText(receiverName) ;
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            receiverName = snapshot.getValue().toString();
+                            friendName.setText(receiverName);
 
-                            fillTheChat(senderName, receiverName) ;
-                        }@Override
+                            fillTheChat(senderName, receiverName);
+                        }
+
+                        @Override
                         public void onCancelled(@NonNull DatabaseError error) {
                             Toast.makeText(ChatWindowActivity.this, "Error while retrieving the friend name", Toast.LENGTH_SHORT).show();
                         }
-                    }) ;
+                    });
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error)
-                {
+                public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(ChatWindowActivity.this, "Error while retrieving sender name", Toast.LENGTH_SHORT).show();
                 }
-            }) ;
+            });
 
             firebaseDatabase.child("Users").child(receiverNo).child("ProfileImage").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists())
-                    {
-                        Picasso.get().load(snapshot.getValue().toString()).into(userProfileImage) ;
+                    if (snapshot.exists()) {
+                        Picasso.get().load(snapshot.getValue().toString()).into(userProfileImage);
                     }
-                }@Override
+                }
+
+                @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(ChatWindowActivity.this, "Error while setting the profile pic !", Toast.LENGTH_SHORT).show();
                 }
-            }) ;
+            });
         }
 
-        adapter = new ChatRetrieveAdapter(chatModelList) ;
-        chatRecyclerView.setAdapter(adapter) ;
+        adapter = new ChatRetrieveAdapter(chatModelList);
+        chatRecyclerView.setAdapter(adapter);
 
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(chatContent.getText()))
-                {
+                if (TextUtils.isEmpty(chatContent.getText())) {
                     Toast.makeText(ChatWindowActivity.this, "Cannot send empty messages !", Toast.LENGTH_SHORT).show();
-                }else
-                {
+                } else {
                     Calendar callForDate = Calendar.getInstance();
                     SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
-                    String chatDate = currentDate.format(callForDate.getTime());
+                    final String chatDate = currentDate.format(callForDate.getTime());
                     SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm:ss a");
-                    String chatTime = currentTime.format(callForDate.getTime());
+                    final String chatTime = currentTime.format(callForDate.getTime());
 
-                    String msg = chatContent.getText().toString() ;
+                    final String msg = chatContent.getText().toString();
 
                     firebaseDatabase.child("Chats").child(senderName).child(receiverName)
                             .push().setValue(new ChatModel(senderName, msg, chatDate+chatTime))
@@ -215,14 +212,96 @@ public class ChatWindowActivity extends AppCompatActivity
                             Toast.makeText(ChatWindowActivity.this, "Error while sending message", Toast.LENGTH_SHORT).show();
                         }
                     }) ;
-                    closeKeyboard() ;
+
+                    /*final String path = firebaseDatabase.push().getKey();
+
+                    firebaseDatabase.child("Chats").child(senderName).child(receiverName).push().setValue(path)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    chatContent.setText("");
+
+                                    firebaseDatabase.child("ChatId").child(path).setValue(new ChatModel(senderName, msg, chatDate + " " + chatTime))
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(ChatWindowActivity.this, "error " + e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatWindowActivity.this, "Error while sending message", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    firebaseDatabase.child("Chats").child(receiverName).child(senderName).push().setValue(path)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    chatContent.setText("");
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatWindowActivity.this, "Error while sending message", Toast.LENGTH_SHORT).show();
+                        }
+                    });*/
+
+                    closeKeyboard();
                 }
             }
         });
     }
 
-    private void fillTheChat(String senderName, String receiverName)
-    {
+    private void fillTheChat(String senderName, String receiverName) {
+        /*firebaseDatabase.child("Chats").child(senderName).child(receiverName).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                firebaseDatabase.child("ChatId").child(snapshot.getValue().toString()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            chatModelList.add(snapshot.getValue(ChatModel.class)) ;
+                            chatRecyclerView.smoothScrollToPosition(chatModelList.size()-1);
+                            adapter.notifyDataSetChanged() ;
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(ChatWindowActivity.this, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) ;
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ChatWindowActivity.this, "Error in loading the chat content", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
         firebaseDatabase.child("Chats").child(senderName).child(receiverName).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName)
@@ -256,8 +335,7 @@ public class ChatWindowActivity extends AppCompatActivity
 
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
-        if (view != null)
-        {
+        if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }

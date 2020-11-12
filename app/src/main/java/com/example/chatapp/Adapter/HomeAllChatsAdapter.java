@@ -38,7 +38,6 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(holder.itemView.getContext(), ChatWindowActivity.class);
-                Toast.makeText(holder.itemView.getContext(), "Sending name " + allChatList.get(position), Toast.LENGTH_SHORT).show();
                 intent.putExtra("Name", allChatList.get(position));
                 intent.putExtra("Type", "Home");
                 holder.itemView.getContext().startActivity(intent);

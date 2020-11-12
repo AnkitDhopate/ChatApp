@@ -3,10 +3,12 @@ package com.example.chatapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,9 +53,10 @@ public class ChatWindowActivity extends AppCompatActivity {
     private ChatRetrieveAdapter adapter;
     private String senderNo, receiverNo;
     private List<ChatModel> chatModelList;
-    private String senderName, receiverName;
+    private String senderName, receiverName, receiverProfilePic;
     private CircleImageView userProfileImage;
     private String type;
+    private LinearLayoutCompat chatLinearLayout ;
 
     private DatabaseReference firebaseDatabase;
     private FirebaseAuth firebaseAuth;
@@ -67,6 +71,7 @@ public class ChatWindowActivity extends AppCompatActivity {
         sendMsg = findViewById(R.id.send_image_btn);
         chatRecyclerView = findViewById(R.id.chat_recycler_view);
         userProfileImage = findViewById(R.id.chat_window_profile_image);
+        chatLinearLayout = findViewById(R.id.linear_layout) ;
 
         chatRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -101,6 +106,7 @@ public class ChatWindowActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
+                                        receiverProfilePic = snapshot.getValue().toString() ;
                                         Picasso.get().load(snapshot.getValue().toString()).into(userProfileImage);
                                     }
                                 }
@@ -158,6 +164,7 @@ public class ChatWindowActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
+                        receiverProfilePic = snapshot.getValue().toString() ;
                         Picasso.get().load(snapshot.getValue().toString()).into(userProfileImage);
                     }
                 }
@@ -171,6 +178,20 @@ public class ChatWindowActivity extends AppCompatActivity {
 
         adapter = new ChatRetrieveAdapter(chatModelList);
         chatRecyclerView.setAdapter(adapter);
+
+        chatLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ChatWindowActivity.this, FriendProfileActivity.class) ;
+                intent.putExtra("Name", receiverName) ;
+                intent.putExtra("Phone", receiverNo) ;
+                if(receiverProfilePic!=null)
+                {
+                    intent.putExtra("ProfilePic", receiverProfilePic) ;
+                }
+                startActivity(intent);
+            }
+        });
 
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override

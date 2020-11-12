@@ -14,8 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ContactUsActivity"
+        <activity android:name=".FriendProfileActivity"
             android:theme="@style/ChatTheme"/>
+        <activity
+            android:name=".ContactUsActivity"
+            android:theme="@style/ChatTheme" />
         <activity
             android:name=".SettingsActivity"
             android:theme="@style/ChatTheme" />
@@ -32,8 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SearchUserActivity"
-            android:theme="@style/ChatTheme"/>
+        <activity
+            android:name=".SearchUserActivity"
+            android:theme="@style/ChatTheme" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".PhoneVerificationActivity" />
         <activity android:name=".MainActivity" />

@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatapp.ChatWindowActivity;
 import com.example.chatapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -24,7 +29,8 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
 
     @NonNull
     @Override
-    public HomeAllChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public HomeAllChatViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_friend_layout, parent, false);
         return new HomeAllChatViewHolder(view);
     }

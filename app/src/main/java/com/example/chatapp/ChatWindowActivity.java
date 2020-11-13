@@ -100,7 +100,8 @@ public class ChatWindowActivity extends AppCompatActivity {
                                     break;
                                 }
                             }
-                            fillTheChat(senderName, receiverName);
+//                            fillTheChat(senderName, receiverName);
+                            fillTheChat(senderNo, receiverNo) ;
 
                             firebaseDatabase.child("Users").child(receiverNo).child("ProfileImage").addValueEventListener(new ValueEventListener() {
                                 @Override
@@ -144,7 +145,8 @@ public class ChatWindowActivity extends AppCompatActivity {
                             receiverName = snapshot.getValue().toString();
                             friendName.setText(receiverName);
 
-                            fillTheChat(senderName, receiverName);
+//                            fillTheChat(senderName, receiverName);
+                            fillTheChat(senderNo, receiverNo) ;
                         }
 
                         @Override
@@ -207,6 +209,36 @@ public class ChatWindowActivity extends AppCompatActivity {
 
                     final String msg = chatContent.getText().toString();
 
+                    firebaseDatabase.child("Chats").child(senderNo).child(receiverNo)
+                            .push().setValue(new ChatModel(senderName, msg, chatDate+chatTime))
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    chatContent.setText("") ;
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatWindowActivity.this, "Error while sending message", Toast.LENGTH_SHORT).show();
+                        }
+                    }) ;
+
+                    firebaseDatabase.child("Chats").child(receiverNo).child(senderNo)
+                            .push().setValue(new ChatModel(senderName, msg, chatDate+chatTime))
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    chatContent.setText("") ;
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ChatWindowActivity.this, "Error while sending message", Toast.LENGTH_SHORT).show();
+                        }
+                    }) ;
+
+                    /*
+                    ///Chats Name Node in Database
                     firebaseDatabase.child("Chats").child(senderName).child(receiverName)
                             .push().setValue(new ChatModel(senderName, msg, chatDate+chatTime))
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -234,6 +266,8 @@ public class ChatWindowActivity extends AppCompatActivity {
                             Toast.makeText(ChatWindowActivity.this, "Error while sending message", Toast.LENGTH_SHORT).show();
                         }
                     }) ;
+                    ///Chats Name Node in Database
+                    */
 
                     /*final String path = firebaseDatabase.push().getKey();
 

@@ -84,6 +84,65 @@ public class HomeActivity extends AppCompatActivity
         new SendNotification("Hello Dear user", "Heading", null) ;
         ////OneSignal
 
+        firebaseDatabase.child("Chats").child(userPh).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                if(snapshot.exists())
+                {
+                    appName.setVisibility(View.GONE) ;
+                    appText.setVisibility(View.GONE) ;
+                    tempLogout.setVisibility(View.GONE) ;
+                    allChatsRecyclerView.setVisibility(View.VISIBLE) ;
+//                    allChatList.add(snapshot.getKey()) ;
+                    String ph = snapshot.getKey() ;
+
+                    firebaseDatabase.child("Users").child(ph).child("Name").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            allChatList.add(snapshot.getValue().toString()) ;
+//                            adapter.notifyDataSetChanged() ;
+                            adapter = new HomeAllChatsAdapter(allChatList) ;
+                            allChatsRecyclerView.setAdapter(adapter) ;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    }) ;
+
+//                    adapter = new HomeAllChatsAdapter(allChatList) ;
+//                    allChatsRecyclerView.setAdapter(adapter) ;
+                }else
+                {
+                    Toast.makeText(HomeActivity.this, "No data available", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        }) ;
+
+        /*
+        //Chat node with Name
         firebaseDatabase.child("Users").child(userPh).child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -135,6 +194,8 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+        //Chat node with Name
+        */
 
 
 

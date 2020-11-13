@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.Adapter.HomeAllChatsAdapter;
+import com.example.chatapp.Classes.SendNotification;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -26,6 +28,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +48,6 @@ public class HomeActivity extends AppCompatActivity
     private DatabaseReference firebaseDatabase ;
     private FirebaseAuth firebaseAuth ;
 
-
-    //Hello To commit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,21 @@ public class HomeActivity extends AppCompatActivity
         firebaseAuth = FirebaseAuth.getInstance() ;
 
         userPh = firebaseAuth.getCurrentUser().getPhoneNumber() ;
+
+        ////OneSignal
+        OneSignal.startInit(this).init() ;
+        OneSignal.setSubscription(true) ;   //Tell OneSignal that he wants to start receiving the notifications
+        OneSignal.idsAvailable(new OneSignal.IdsAvailableHandler() {
+            @Override
+            public void idsAvailable(String userId, String registrationId) {
+                firebaseDatabase.child("Users").child(userPh).child("notificationKey").setValue(userId) ;
+
+            }
+        });
+
+        OneSignal.setInFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);  //To display the notification in the top bar
+        new SendNotification("Hello Dear user", "Heading", null) ;
+        ////OneSignal
 
         firebaseDatabase.child("Users").child(userPh).child("Name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -145,6 +162,8 @@ public class HomeActivity extends AppCompatActivity
             startActivity(new Intent(HomeActivity.this, SettingsActivity.class));
         }else if(id==R.id.logout)
         {
+            OneSignal.setSubscription(false) ;
+
             SharedPreferences preferences = getSharedPreferences("LoginStatus" , MODE_PRIVATE) ;
             SharedPreferences.Editor editor = preferences.edit() ;
             editor.putString("Remember" , "false") ;

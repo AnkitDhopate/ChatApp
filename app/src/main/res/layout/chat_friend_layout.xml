@@ -6,30 +6,41 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<!--    <de.hdodenhof.circleimageview.CircleImageView-->
-<!--        android:id="@+id/home_user_profile_image"-->
-<!--        android:layout_width="45dp"-->
-<!--        android:layout_height="45dp"-->
-<!--        android:layout_marginLeft="10dp"-->
-<!--        android:layout_gravity="center_vertical"-->
-<!--        />-->
-
-    <TextView
-        android:id="@+id/friend_id"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Phone number will appear here"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textColor="#000000"
-        android:textSize="22sp"
-        android:padding="10dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_marginLeft="15dp"
-        />
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/friend_home_profile_image"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/user_temp_profile"
+            app:civ_border_color="#000000"
+            app:civ_border_width="2px"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp" />
+
+        <TextView
+            android:id="@+id/friend_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Phone number will appear here"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#000000"
+            android:textSize="22sp"
+            android:padding="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="5dp"
+            />
+
+    </LinearLayout>
+
+
 
     <View
         android:id="@+id/divider"

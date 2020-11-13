@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.chatapp.Adapter.HomeAllChatsAdapter;
 import com.example.chatapp.Classes.SendNotification;
+import com.example.chatapp.Model.HomeChatModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -34,6 +35,8 @@ import com.onesignal.OneSignal;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeActivity extends AppCompatActivity
 {
     private FloatingActionButton newChatBtn ;
@@ -41,7 +44,8 @@ public class HomeActivity extends AppCompatActivity
     private TextView appName, appText ;
     private HomeAllChatsAdapter adapter ;
     private RecyclerView allChatsRecyclerView ;
-    private List<String> allChatList ;
+//    private List<String> allChatList ;
+    private List<HomeChatModel> homeChatModelList ;
     private String userName, userPh;
     private ProgressDialog loadingBar ;
 
@@ -62,7 +66,8 @@ public class HomeActivity extends AppCompatActivity
         loadingBar = new ProgressDialog(this) ;
 
         allChatsRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
-        allChatList = new ArrayList<>() ;
+//        allChatList = new ArrayList<>() ;
+        homeChatModelList = new ArrayList<>() ;
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference() ;
         firebaseAuth = FirebaseAuth.getInstance() ;
@@ -96,7 +101,32 @@ public class HomeActivity extends AppCompatActivity
 //                    allChatList.add(snapshot.getKey()) ;
                     String ph = snapshot.getKey() ;
 
-                    firebaseDatabase.child("Users").child(ph).child("Name").addValueEventListener(new ValueEventListener() {
+                    firebaseDatabase.child("Users").child(ph).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            homeChatModelList.add(snapshot.getValue(HomeChatModel.class)) ;
+
+                            adapter = new HomeAllChatsAdapter(homeChatModelList) ;
+                            allChatsRecyclerView.setAdapter(adapter) ;
+
+//                            allChatList.add(snapshot.child("Name").getValue().toString()) ;
+//                            if(snapshot.child("ProfileImage").exists())
+//                            {
+//                                profileImageList.add(snapshot.child("ProfileImage").getValue().toString()) ;
+//                            }
+////                            adapter.notifyDataSetChanged() ;
+//                            adapter = new HomeAllChatsAdapter(allChatList) ;
+//                            allChatsRecyclerView.setAdapter(adapter) ;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    }) ;
+
+                    /*firebaseDatabase.child("Users").child(ph).child("Name").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             allChatList.add(snapshot.getValue().toString()) ;
@@ -109,7 +139,7 @@ public class HomeActivity extends AppCompatActivity
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
-                    }) ;
+                    }) ;*/
 
 //                    adapter = new HomeAllChatsAdapter(allChatList) ;
 //                    allChatsRecyclerView.setAdapter(adapter) ;

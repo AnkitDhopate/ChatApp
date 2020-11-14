@@ -129,13 +129,25 @@ public class SearchUserActivity extends AppCompatActivity {
             firebaseDatabase.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot ds : snapshot.getChildren())
-                    {
-                        if(mobileArrayPhone.contains(ds.child("Phone").getValue().toString()))
+//                    for (DataSnapshot ds : snapshot.getChildren())
+//                    {
+//                        if(mobileArrayPhone.contains(ds.child("Phone").getValue().toString()))
+//                        {
+//                            searchUserModelList.add(ds.child("Phone").getValue().toString());
+//                            adapter.notifyDataSetChanged();
+//                        }
+//                    }
+                    try{
+                        for (DataSnapshot ds : snapshot.getChildren())
                         {
-                            searchUserModelList.add(ds.child("Phone").getValue().toString());
-                            adapter.notifyDataSetChanged();
+                            if(mobileArrayPhone.contains(ds.child("Phone").getValue().toString()))
+                            {
+                                searchUserModelList.add(ds.child("Phone").getValue().toString());
+                                adapter.notifyDataSetChanged();
+                            }
                         }
+                    }catch (Exception e)
+                    {
                     }
                 }
 

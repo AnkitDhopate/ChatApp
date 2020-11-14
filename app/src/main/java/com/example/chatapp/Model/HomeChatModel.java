@@ -1,8 +1,7 @@
 package com.example.chatapp.Model;
 
-public class HomeChatModel
-{
-    private String ProfileImage, Name ;
+public class HomeChatModel {
+    private String ProfileImage, Name;
 
     public HomeChatModel() {
     }

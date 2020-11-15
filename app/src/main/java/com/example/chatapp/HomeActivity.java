@@ -44,6 +44,7 @@ public class HomeActivity extends AppCompatActivity {
     private HomeAllChatsAdapter adapter;
     private RecyclerView allChatsRecyclerView;
     private List<HomeChatModel> homeChatModelList;
+    private List<String> lastMsgList;
     private String userPh;
     private ProgressDialog loadingBar;
 
@@ -65,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
 
         allChatsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         homeChatModelList = new ArrayList<>();
+        lastMsgList = new ArrayList<>();
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -111,6 +113,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         }
                     });
+
                 } else {
                     Toast.makeText(HomeActivity.this, "No data available", Toast.LENGTH_SHORT).show();
                 }

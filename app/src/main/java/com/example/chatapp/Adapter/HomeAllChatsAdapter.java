@@ -1,10 +1,12 @@
 package com.example.chatapp.Adapter;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +15,12 @@ import com.example.chatapp.ChatWindowActivity;
 import com.example.chatapp.FriendProfileActivity;
 import com.example.chatapp.Model.HomeChatModel;
 import com.example.chatapp.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,9 +29,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapter.HomeAllChatViewHolder> {
     private List<HomeChatModel> homeChatModelList ;
+    private FirebaseAuth firebaseAuth ;
+    private DatabaseReference databaseReference ;
+    private String currUser ;
 
     public HomeAllChatsAdapter(List<HomeChatModel> homeChatModelList) {
         this.homeChatModelList = homeChatModelList;
+
+        firebaseAuth = FirebaseAuth.getInstance() ;
+        databaseReference = FirebaseDatabase.getInstance().getReference() ;
+        currUser = firebaseAuth.getCurrentUser().getPhoneNumber() ;
     }
 
     @NonNull
@@ -35,7 +50,10 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final HomeAllChatViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final HomeAllChatViewHolder holder, final int position)
+    {
+
+        setLastMsg(currUser, homeChatModelList.get(position).getPhone(), holder.lastMsgTxt) ;
 
         holder.chatDisplayText.setText(homeChatModelList.get(position).getName());
         Picasso.get().load(homeChatModelList.get(position).getProfileImage()).into(holder.profileImg) ;
@@ -68,12 +86,32 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
     }
 
     public class HomeAllChatViewHolder extends RecyclerView.ViewHolder {
-        TextView chatDisplayText;
+        TextView chatDisplayText, lastMsgTxt ;
         CircleImageView profileImg ;
         public HomeAllChatViewHolder(@NonNull View itemView) {
             super(itemView);
             chatDisplayText = itemView.findViewById(R.id.friend_id);
             profileImg = itemView.findViewById(R.id.friend_home_profile_image) ;
+            lastMsgTxt = itemView.findViewById(R.id.friend_latest_message) ;
         }
+    }
+
+    public void setLastMsg(String user, String friend, final TextView lstMsg)
+    {
+        databaseReference.child("Chats").child(user).child(friend).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren())
+                {
+                    lstMsg.setText(ds.child("message").getValue().toString());
+//                    Log.d("Message", ds.getValue().toString()) ;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        }) ;
     }
 }

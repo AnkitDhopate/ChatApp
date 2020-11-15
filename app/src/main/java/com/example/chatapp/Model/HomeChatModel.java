@@ -1,14 +1,15 @@
 package com.example.chatapp.Model;
 
 public class HomeChatModel {
-    private String ProfileImage, Name;
+    private String ProfileImage, Name, Phone;
 
     public HomeChatModel() {
     }
 
-    public HomeChatModel(String profileImage, String name) {
+    public HomeChatModel(String profileImage, String name, String phone) {
         ProfileImage = profileImage;
         Name = name;
+        Phone = phone ;
     }
 
     public String getName() {
@@ -17,6 +18,14 @@ public class HomeChatModel {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
     }
 
     public String getProfileImage() {

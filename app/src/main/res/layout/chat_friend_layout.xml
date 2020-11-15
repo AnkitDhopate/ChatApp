@@ -19,24 +19,43 @@
             app:civ_border_color="#000000"
             app:civ_border_width="2px"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"/>
 
-        <TextView
-            android:id="@+id/friend_id"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Phone number will appear here"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textColor="#000000"
-            android:textSize="22sp"
-            android:padding="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:layout_marginLeft="5dp"
-            />
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/friend_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone number will appear here"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:padding="10dp"
+                android:paddingTop="5dp"
+                android:layout_marginLeft="5dp"
+                />
+
+            <TextView
+                android:id="@+id/friend_latest_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading latest message ..."
+                android:textColor="#787878"
+                android:textSize="12sp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="3dp"/>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -47,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        android:layout_marginTop="55dp"/>
+        android:layout_marginTop="80dp"/>
 
 
 </androidx.cardview.widget.CardView>

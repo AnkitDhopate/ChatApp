@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chatapp.Adapter.ChatRetrieveAdapter;
+import com.example.chatapp.Classes.SendNotification;
 import com.example.chatapp.Model.ChatModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,7 +50,7 @@ public class ChatWindowActivity extends AppCompatActivity {
     private List<ChatModel> chatModelList;
     private String senderName, receiverName, receiverProfilePic;
     private CircleImageView userProfileImage;
-    private String type;
+    private String type, notificationKey;
     private LinearLayoutCompat chatLinearLayout ;
 
     private DatabaseReference firebaseDatabase;
@@ -209,6 +210,21 @@ public class ChatWindowActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     chatContent.setText("") ;
+
+                                    firebaseDatabase.child("Users").child(receiverNo).child("notificationKey").addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            notificationKey = snapshot.getValue().toString() ;
+
+                                            new SendNotification(msg, "Heading", notificationKey) ;
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(ChatWindowActivity.this, "Error " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }) ;
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override

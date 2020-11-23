@@ -1,6 +1,8 @@
 package com.example.chatapp.Adapter;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -15,13 +15,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -35,6 +33,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        firebaseAuth = FirebaseAuth.getInstance() ;
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference("Users") ;
 
         SharedPreferences preferences = getSharedPreferences("LoginStatus" , MODE_PRIVATE) ;
         String swi = preferences.getString("Remember" , "") ;
@@ -51,9 +52,6 @@ public class MainActivity extends AppCompatActivity
         userEmail = findViewById(R.id.user_email) ;
         userPhone = findViewById(R.id.user_phone) ;
         mainNextBtn = findViewById(R.id.next_btn) ;
-
-        firebaseAuth = FirebaseAuth.getInstance() ;
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference("Users") ;
 
         mainNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

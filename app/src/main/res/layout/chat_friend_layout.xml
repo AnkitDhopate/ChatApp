@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,45 +14,44 @@
             android:id="@+id/friend_home_profile_image"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:src="@drawable/user_temp_profile"
-            app:civ_border_color="#000000"
-            app:civ_border_width="2px"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:src="@drawable/user_temp_profile"
+            app:civ_border_color="#000000"
+            app:civ_border_width="2px" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/friend_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:paddingRight="10dp"
                 android:text="Phone number will appear here"
+                android:textColor="#000000"
+                android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColor="#000000"
-                android:textSize="22sp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="15dp"
-                android:layout_marginLeft="5dp"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/friend_latest_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="3dp"
+                android:gravity="center_vertical"
                 android:text="Loading latest message ..."
                 android:textColor="#787878"
-                android:textSize="12sp"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="17dp"
-                android:layout_marginRight="3dp"/>
+                android:textSize="12sp" />
 
 
         </LinearLayout>
@@ -61,13 +59,12 @@
     </LinearLayout>
 
 
-
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        android:layout_marginTop="80dp"/>
+        android:layout_marginTop="80dp"
+        android:background="?android:attr/listDivider" />
 
 
 </androidx.cardview.widget.CardView>

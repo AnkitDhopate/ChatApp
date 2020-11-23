@@ -10,6 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,9 @@ import android.widget.Toast;
 import com.example.chatapp.Adapter.HomeAllChatsAdapter;
 import com.example.chatapp.Classes.SendNotification;
 import com.example.chatapp.Model.HomeChatModel;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -33,6 +37,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -44,15 +49,14 @@ public class HomeActivity extends AppCompatActivity {
     private HomeAllChatsAdapter adapter;
     private RecyclerView allChatsRecyclerView;
     private List<HomeChatModel> homeChatModelList;
-    private List<String> lastMsgList;
     private String userPh;
-    private ProgressDialog loadingBar;
 
     private DatabaseReference firebaseDatabase;
     private FirebaseAuth firebaseAuth;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -62,11 +66,9 @@ public class HomeActivity extends AppCompatActivity {
         appText = findViewById(R.id.textView6);
         allChatsRecyclerView = findViewById(R.id.chats_recycler_view);
 
-        loadingBar = new ProgressDialog(this);
 
         allChatsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         homeChatModelList = new ArrayList<>();
-        lastMsgList = new ArrayList<>();
 
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -100,12 +102,10 @@ public class HomeActivity extends AppCompatActivity {
 
                     firebaseDatabase.child("Users").child(ph).addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                        public void onDataChange(@NonNull DataSnapshot snapshot)
+                        {
                             homeChatModelList.add(snapshot.getValue(HomeChatModel.class));
-
-                            adapter = new HomeAllChatsAdapter(homeChatModelList);
-                            allChatsRecyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged() ;
                         }
 
                         @Override
@@ -113,6 +113,9 @@ public class HomeActivity extends AppCompatActivity {
 
                         }
                     });
+
+                    adapter = new HomeAllChatsAdapter(homeChatModelList);
+                    allChatsRecyclerView.setAdapter(adapter);
 
                 } else {
                     Toast.makeText(HomeActivity.this, "No data available", Toast.LENGTH_SHORT).show();
@@ -122,7 +125,6 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
             }
 
             @Override
@@ -173,5 +175,40 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setStatus("active") ;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        setStatus("inactive");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setStatus("inactive");
+    }
+
+    public void setStatus(final String state)
+    {
+        HashMap<String, Object> statusMap = new HashMap<>() ;
+        statusMap.put("status", state) ;
+
+        firebaseDatabase.child("Users").child(firebaseAuth.getCurrentUser().getPhoneNumber()).updateChildren(statusMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(HomeActivity.this, "error " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) ;
     }
 }

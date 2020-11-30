@@ -1,4 +1,2 @@
 # ChatApp
-My Chat App
-This is my First Fully functional ChatApp uploaded on GitHub.
-The Database used is Firebase Realtime Database.
+A Realtime chat Application created using Android Studio and Firebase Realtime Database.

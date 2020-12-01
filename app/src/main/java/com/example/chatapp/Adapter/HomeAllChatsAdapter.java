@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,6 +91,7 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
     public class HomeAllChatViewHolder extends RecyclerView.ViewHolder {
         TextView chatDisplayText, lastMsgTxt ;
         CircleImageView profileImg ;
+        ImageView online, offline ;
         public HomeAllChatViewHolder(@NonNull View itemView) {
             super(itemView);
             chatDisplayText = itemView.findViewById(R.id.friend_id);
@@ -106,7 +108,6 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
                 for(DataSnapshot ds : snapshot.getChildren())
                 {
                     lstMsg.setText(ds.child("message").getValue().toString());
-//                    Log.d("Message", ds.getValue().toString()) ;
                 }
             }
 
@@ -116,4 +117,5 @@ public class HomeAllChatsAdapter extends RecyclerView.Adapter<HomeAllChatsAdapte
             }
         }) ;
     }
+
 }

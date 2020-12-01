@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     protected void onStart() {
         super.onStart();
         setStatus("active") ;
@@ -210,5 +210,5 @@ public class HomeActivity extends AppCompatActivity {
                 Toast.makeText(HomeActivity.this, "error " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }) ;
-    }
+    }*/
 }
